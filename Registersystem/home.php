@@ -22,25 +22,42 @@ require_once("functions.php");
 
             <input class="menu-btn" type="checkbox" id="menu-btn" />
             <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
-            <ul class="dropdown-content">
-                <li><a href="homepage.php">Home</a></li><br />
-                <li><a href="login.php">Logout</a></li><br />
-            </ul>
+            
+            <?php
+            $query = "SELECT * FROM `users` WHERE id = '{$_SESSION['user']}'";
+            $run_query = mysqli_query($conn, $query);
+            if (mysqli_num_rows($run_query) == 1) {
+                echo  " <ul class='dropdown-content'> ";
+                echo  "<li><a href='home.php'>Home</a></li><br/>";
+                echo  "<li><a href='logout.php'>Logout</a></li><br/>";
+                echo "</ul>";
+            } else {
+                echo  " <ul class='dropdown-content'> ";
+                echo  "<li><a href='home.php'>Home</a></li><br/>";
+                echo  "<li><a href='login.php'>Login</a></li><br/>";
+                echo  "<li><a href='index.php'>Register</a></li><br/>";
+                echo "</ul>";
+            }
+
+            ?>
+            
         </r_header>
         <div class="body">
             <h1 id="txt_title">HOME PAGE</h1>
             <?php
             $query = "SELECT * FROM `users` WHERE id = '{$_SESSION['user']}'";
+        
             $run_query = mysqli_query($conn, $query);
-            if (mysqli_num_rows($run_query) == 1) {
+            var_dump($query, $run_query);
+            if (mysqli_num_rows($run_query) === NULL) {
+                echo "Welcome to our Website";
+            } else               
                 while ($result = mysqli_fetch_assoc($run_query)) {
                     $user_name = $result['username'];
                 }
-                
-            }
-            
+                echo "Welcome to  " . $user_name;
             ?>
-            <p style="font-size: 30px;"> Welcom to [<?php echo $user_name;?>]</p>
+            <!-- <p style="font-size: 30px;"> Welcome to [<?php echo $user_name; ?>]</p> -->
         </div>
         <div class="footer">
             <h3>All Rights Reserved</h3>
