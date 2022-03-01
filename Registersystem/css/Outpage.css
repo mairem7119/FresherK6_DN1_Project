@@ -1,0 +1,53 @@
+html, body,.container{
+    height: 100%;
+}
+
+body{
+    margin: 0;
+}
+
+.header{
+    background-color: rgb(185, 19, 19);
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.body{
+    text-align: center;
+    flex-basis: 100%;
+}
+
+.body .btn{
+    font-size: medium;
+    border-radius: 10px;
+    height: 40px;
+    width: 20%;
+    background-color: rgb(16, 177, 177);
+    border-color: rgb(28, 149, 165);
+
+}
+
+.body h2{
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+
+.body .btn:last-child{
+    margin-bottom: 20px;
+    margin-top: 60px;
+}
+
+.footer{
+    background-color: rgb(185, 19, 19);
+    color: white;
+    text-align: right;
+    padding: 10px;
+}

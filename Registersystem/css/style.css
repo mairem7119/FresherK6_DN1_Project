@@ -1,0 +1,74 @@
+html, body, .container {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.header{
+    background-color: rgb(185, 19, 19);
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.body {
+    text-align: center;
+}
+
+form {
+    flex-basis: 100%;
+}
+
+.body .input-group {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    padding-top: 25px;
+    font-size: 20px;
+    display: inline-block;
+    width: 60%;
+}
+
+.body .input-group:last-child {
+    margin-bottom: 20px;;
+}
+
+.body .input-group label {
+    width: 200px;
+    text-align: right;
+    display: inline-block;
+}
+
+.body .input-group input {
+    width: 300px;
+    line-height: 40px;
+}
+
+.body .btn {
+     border-radius: 10px;
+     height: 40px;
+     width: 90px;
+     border: 0;
+     margin: 5px;
+}
+
+.body .btn:nth-child(1) {
+    background-color: silver;
+}
+.body .btn:nth-child(2) {
+    background-color: rgb(30, 131, 179);
+}
+ 
+
+.footer{
+    background-color: rgb(185, 19, 19);
+    color: white;
+    text-align: right;
+    padding: 10px;
+    
+}
+
