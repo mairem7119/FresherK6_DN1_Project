@@ -1,55 +1,78 @@
-<?php 
-   $DATABASE_HOST = 'localhost';
-   $DATABASE_USER = 'root';
-   $DATABASE_PASS = '';
-   $DATABASE_NAME = 'registration';
-
-   $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-
-   if ($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
-  }
-  
-   //Kiem tra xem da nhap data hay chua, isset kiem tra data ton tai k.
-   if(!isset($_POST['username']) || empty($_POST['username']) || !isset($_POST['password_1']) 
-   || empty($_POST['password_1']) || !isset($_POST['email']) || empty($_POST['email']) ){
-        echo( "<script type='text/javascript'>alert('Please complete the registration form!');</script>");
-        exit();
-   }
-   // Check pasword and confirm pw is matching
-   $message = "Oops! Password did not match! Try again";
-   if($_POST['password_1'] != $_POST['password_2']){
-        echo( "<script type='text/javascript'>alert('$message');</script>");
-        exit();
-   }
-
-    //check xem account da ton tai hay chua
-    $stmt1 = $con->prepare("SELECT id, password FROM users WHERE username = ?");
-    $stmt1->bind_param('s', $_POST['username']);
-    $stmt1->execute();
-    $stmt1->store_result();
-    //store result de luu ket qua va doi chieu
-    if($stmt1->num_rows > 0){
-        // username da ton tai
-        echo ( "<script type='text/javascript'>alert('Username exists, please choose another!');</script>");
-    }else{
-        //tao tai khoan moi
-        $stmt2 = $con->prepare('INSERT INTO users(username, password, email) VALUES(?, ?, ?)');
-        if($stmt2){
-            // ma hoa mat khau trong database
-            $password = password_hash($_POST['password_1'], PASSWORD_DEFAULT);
-            $stmt2->bind_param('sss', $_POST['username'], $password, $_POST['email']);
-            $stmt2->execute();
-            $stmt2->close();
-
-            header('Location: Outpage.php');
-
-        }else{
-            echo ( "<script type='text/javascript'>alert('Username exists, please choose another!');</script>");
-        }
+<?php
+class USER
+{
+    private $db;
+ 
+    function __construct($DB_con)
+    {
+      $this->db = $DB_con;
     }
-
-    $stmt1->close();
-    $con->close();
-?>
-
+ 
+    public function register($fname,$lname,$uname,$umail,$upass)
+    {
+       try
+       {
+           $new_password = password_hash($upass, PASSWORD_DEFAULT);
+   
+           $stmt = $this->db->prepare("INSERT INTO users(user_name,user_email,user_pass) 
+                                                       VALUES(:uname, :umail, :upass)");
+              
+           $stmt->bindparam(":uname", $uname);
+           $stmt->bindparam(":umail", $umail);
+           $stmt->bindparam(":upass", $new_password);            
+           $stmt->execute(); 
+   
+           return $stmt; 
+       }
+       catch(PDOException $e)
+       {
+           echo $e->getMessage();
+       }    
+    }
+ 
+    public function login($uname,$umail,$upass)
+    {
+       try
+       {
+          $stmt = $this->db->prepare("SELECT * FROM users WHERE user_name=:uname OR user_email=:umail LIMIT 1");
+          $stmt->execute(array(':uname'=>$uname, ':umail'=>$umail));
+          $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+          if($stmt->rowCount() > 0)
+          {
+             if(password_verify($upass, $userRow['user_pass']))
+             {
+                $_SESSION['user_session'] = $userRow['user_id'];
+                return true;
+             }
+             else
+             {
+                return false;
+             }
+          }
+       }
+       catch(PDOException $e)
+       {
+           echo $e->getMessage();
+       }
+   }
+ 
+   public function is_loggedin()
+   {
+      if(isset($_SESSION['user_session']))
+      {
+         return true;
+      }
+   }
+ 
+   public function redirect($url)
+   {
+       header("Location: $url");
+   }
+ 
+   public function logout()
+   {
+        session_destroy();
+        unset($_SESSION['user_session']);
+        return true;
+   }
+}

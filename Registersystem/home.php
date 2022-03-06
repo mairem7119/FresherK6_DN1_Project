@@ -48,14 +48,14 @@ require_once("functions.php");
             $query = "SELECT * FROM `users` WHERE id = '{$_SESSION['user']}'";
         
             $run_query = mysqli_query($conn, $query);
-            var_dump($query, $run_query);
+            
             if (mysqli_num_rows($run_query) === NULL) {
-                echo "Welcome to our Website";
+                echo "<h1>Welcome to our Website</h1>";
             } else               
                 while ($result = mysqli_fetch_assoc($run_query)) {
                     $user_name = $result['username'];
                 }
-                echo "Welcome to  " . $user_name;
+                echo "<h1>Welcome to  " . $user_name."</h1>";
             ?>
             <!-- <p style="font-size: 30px;"> Welcome to [<?php echo $user_name; ?>]</p> -->
         </div>

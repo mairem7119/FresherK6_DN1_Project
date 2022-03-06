@@ -1,4 +1,5 @@
 <?php 
+   session_start();
    $DATABASE_HOST = 'localhost:3307';
    $DATABASE_USER = 'root';
    $DATABASE_PASS = '';
@@ -9,4 +10,7 @@
    if(!$conn){
       die("Awaiting Resources");
       }
+
+   include_once 'User.php';
+   $user = new User($conn);   
    ?>

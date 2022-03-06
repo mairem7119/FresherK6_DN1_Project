@@ -14,7 +14,7 @@
     </div>
 
     <form method="post" autocomplete="off" id="form">
-      <?php include('errors.php'); ?>
+      <?php include('config.php'); ?>
       <div class="body">
         <h1 id="txt_title" style="color: darkblue; text-align: center; padding-top: 60px;">REGISTER USER</h1>
 

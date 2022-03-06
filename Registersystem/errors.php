@@ -1,34 +1,21 @@
 <?php
-$DATABASE_HOST = 'localhost:3307';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'registration';
+include "User.php";
+include "config.php";
 
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-
-if ($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //Kiem tra xem da nhap data hay chua, isset kiem tra data ton tai k.
-    // if (
-    //     !isset($_POST['username']) || empty($_POST['username']) || !isset($_POST['password_1'])
-    //     || empty($_POST['password_1']) || !isset($_POST['email']) || empty($_POST['email'])
-    // ) {
-    //     echo ("Please complete the registration form!");
-    //     exit();
-    // }
-    // Check pasword and confirm pw is matching
-    
+     
     if ($_POST['password_1'] != $_POST['password_2']) {
         echo ("Oops! Password did not match! Try again");
         exit();
     }
 
     //check xem account da ton tai hay chua
-    $stmt1 = $con->prepare("SELECT id, password FROM users WHERE email = ?");
+    $stmt1 = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
     $stmt1->bind_param('s', $_POST['email']);
     $stmt1->execute();
     $stmt1->store_result();
@@ -38,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo ("email exists, please choose another!");
     } else {
         //tao tai khoan moi
-        $stmt2 = $con->prepare('INSERT INTO users(username, password, email) VALUES(?, ?, ?)');
+        $stmt2 = $conn->prepare('INSERT INTO users(username, password, email) VALUES(?, ?, ?)');
         if ($stmt2) {
             // ma hoa mat khau trong database
             $password = password_hash($_POST['password_1'], PASSWORD_DEFAULT);
@@ -53,5 +40,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $stmt1->close();
-    $con->close();
+    $conn->close();
 }

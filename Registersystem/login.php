@@ -59,8 +59,6 @@
           alert("Enter your Password");
           return false;
         }
-
-
         //======= Submit form using AJAX
         var frm = $("#frm").serialize();
         $.ajax({
@@ -74,7 +72,7 @@
               alert("Please check Email and Password.");
             }
           },
-          errror: function(err) {
+          error: function(err) {
             alert("Something Went Wrong");
           }
         })
